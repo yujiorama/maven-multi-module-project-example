@@ -1,6 +1,41 @@
-FROM docker.io/bellsoft/liberica-openjdk-alpine:11
+FROM debian:10-slim as builder
 
-RUN apk add --update tzdata \
- && ln -s /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
- && addgroup -g 1001 app \
- && adduser -h /app -H -G app -D -u 1001 app
+ARG MAJOR="11"
+ARG MINOR="0"
+ARG PATCH="10"
+ARG REVISION="9"
+ARG VERSION="${MAJOR}.${MINOR}.${PATCH}"
+ARG TYPE="-lite"
+ARG EXTRACT_DIR="jdk-${VERSION}${TYPE}"
+ARG DOWNLOAD_URL="https://download.bell-sw.com/java/${VERSION}+${REVISION}/bellsoft-jdk${VERSION}+${REVISION}-linux-amd64${TYPE}.tar.gz"
+
+ENV JAVA_HOME="/opt/jdk-${MAJOR}" \
+    JAVA_OPTS="-Dfile.encoding=UTF-8 -Duser.timezone=Asia/Tokyo"
+
+RUN set -x \
+ && DEBIAN_FRONTEND=noninteractive apt-get update -q -y \
+ && DEBIAN_FRONTEND=noninteractive apt-get install -q -y \
+    ca-certificates \
+    curl \
+    gzip \
+    tar \
+    tzdata \
+ && curl -fsSL "${DOWNLOAD_URL}" \
+  | tar xzf - -C /opt \
+ && mv "/opt/${EXTRACT_DIR}" "/opt/jdk-${MAJOR}" \
+ && cp /usr/share/zoneinfo/Japan /opt/Japan \
+  ;
+
+FROM gcr.io/distroless/base-debian10:latest
+
+ARG MAJOR="11"
+ARG MINOR="0"
+ARG PATCH="10"
+ARG REVISION="9"
+ARG VERSION="${MAJOR}.${MINOR}.${PATCH}"
+
+ENV JAVA_HOME="/opt/jdk-${MAJOR}" \
+    JAVA_OPTS="-Dfile.encoding=UTF-8 -Duser.timezone=Asia/Tokyo"
+
+COPY --from=builder "/opt/jdk-${MAJOR}" /opt/
+COPY --from=builder "/opt/Japan" /etc/localtime

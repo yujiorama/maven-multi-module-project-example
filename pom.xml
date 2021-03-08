@@ -128,7 +128,6 @@
                                         <jvmFlag>-Dfile.encoding=UTF-8</jvmFlag>
                                         <jvmFlag>-Duser.timezone=Asia/Tokyo</jvmFlag>
                                     </jvmFlags>
-                                    <user>app:app</user>
                                 </container>
                                 <containerizingMode>exploded</containerizingMode>
                             </configuration>
