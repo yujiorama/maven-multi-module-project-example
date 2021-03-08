@@ -15,6 +15,10 @@
     <packaging>jar</packaging>
     <description>bar service of Demo project for Spring Boot</description>
 
+    <properties>
+        <mainClass>bar.Application</mainClass>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.example</groupId>

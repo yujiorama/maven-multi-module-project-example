@@ -9,7 +9,7 @@ ARG TYPE="-lite"
 ARG EXTRACT_DIR="jdk-${VERSION}${TYPE}"
 ARG DOWNLOAD_URL="https://download.bell-sw.com/java/${VERSION}+${REVISION}/bellsoft-jdk${VERSION}+${REVISION}-linux-amd64${TYPE}.tar.gz"
 
-ENV JAVA_HOME="/opt/jdk-${MAJOR}" \
+ENV JAVA_HOME="/opt/jdk" \
     JAVA_OPTS="-Dfile.encoding=UTF-8 -Duser.timezone=Asia/Tokyo"
 
 RUN set -x \
@@ -22,8 +22,7 @@ RUN set -x \
     tzdata \
  && curl -fsSL "${DOWNLOAD_URL}" \
   | tar xzf - -C /opt \
- && mv "/opt/${EXTRACT_DIR}" "/opt/jdk-${MAJOR}" \
- && cp /usr/share/zoneinfo/Japan /opt/Japan \
+ && mv "/opt/${EXTRACT_DIR}" "/opt/jdk" \
   ;
 
 FROM gcr.io/distroless/base-debian10:latest
@@ -34,8 +33,9 @@ ARG PATCH="10"
 ARG REVISION="9"
 ARG VERSION="${MAJOR}.${MINOR}.${PATCH}"
 
-ENV JAVA_HOME="/opt/jdk-${MAJOR}" \
+ENV JAVA_HOME="/opt/jdk" \
     JAVA_OPTS="-Dfile.encoding=UTF-8 -Duser.timezone=Asia/Tokyo"
 
-COPY --from=builder "/opt/jdk-${MAJOR}" /opt/
-COPY --from=builder "/opt/Japan" /etc/localtime
+COPY --from=builder "/opt/jdk" "/opt/jdk"
+COPY --from=builder "/usr/share/zoneinfo/Japan" /etc/localtime
+COPY --from=builder "/lib/x86_64-linux-gnu/libz.so.1" /lib/x86_64-linux-gnu/

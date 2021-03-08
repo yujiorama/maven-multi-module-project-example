@@ -90,13 +90,14 @@
                             <configuration>
                                 <images>
                                     <image>
-                                        <name>baseline</name>
+                                        <name>${project.groupId}/baseline</name>
                                         <build>
                                             <dockerFile>${session.executionRootDirectory}/src/main/docker/baseline/Dockerfile</dockerFile>
                                             <cleanup>try</cleanup>
                                         </build>
                                     </image>
                                 </images>
+                                <entryPoint>/opt/jdk/bin/java</entryPoint>
                             </configuration>
                             <executions>
                                 <execution>
@@ -113,7 +114,7 @@
                             <version>${jib-maven-plugin.version}</version>
                             <configuration>
                                 <from>
-                                    <image>docker://baseline</image>
+                                    <image>docker://${project.groupId}/baseline</image>
                                 </from>
                                 <to>
                                     <image>${project.groupId}/${project.artifactId}:${project.version}</image>
@@ -124,10 +125,14 @@
                                         <LANG>ja_JP.UTF-8</LANG>
                                         <LANGUAGE>ja_JP.UTF-8</LANGUAGE>
                                     </environment>
-                                    <jvmFlags>
-                                        <jvmFlag>-Dfile.encoding=UTF-8</jvmFlag>
-                                        <jvmFlag>-Duser.timezone=Asia/Tokyo</jvmFlag>
-                                    </jvmFlags>
+                                    <entrypoint>/opt/jdk/bin/java</entrypoint>
+                                    <args>
+                                        <arg>-Dfile.encoding=UTF-8</arg>
+                                        <arg>-Duser.timezone=Asia/Tokyo</arg>
+                                        <arg>-cp</arg>
+                                        <arg>/app/resources:/app/classes:/app/libs/*</arg>
+                                        <arg>${mainClass}</arg>
+                                    </args>
                                 </container>
                                 <containerizingMode>exploded</containerizingMode>
                             </configuration>

@@ -15,6 +15,10 @@
     <packaging>jar</packaging>
     <description>foo service of Demo project for Spring Boot</description>
 
+    <properties>
+        <mainClass>foo.Application</mainClass>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.example</groupId>

@@ -17,7 +17,7 @@ com.example/bar-service       0.0.1-SNAPSHOT   6828f77cbc02   41 years ago     2
 build app container image with jib:dockerBuild
 
 ```bash
-$ $ mvn -Pbuild-jib clean package jib:dockerBuild
+$ $ mvn -Pbuild-jib clean package
 
 $ docker images | grep -E '(foo|bar)-service'
 com.example/bar-service       0.0.1-SNAPSHOT   917b3d3d545f   51 years ago         151MB
