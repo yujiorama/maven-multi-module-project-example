@@ -37,19 +37,19 @@ OpenJDK 64-Bit Server VM (build 11.0.10+9-LTS, mixed mode)
 ## (Example) plain distroless/java:11
 
 * size
-    - Bigger than image with cnb-build
+    - Smaller than image with cnb-build
     - Bigger than iamge with jib-build
 * version
     - Older than image with cnb-build
     - Older than iamge with jib-build
 
 ```bash
-$ docker pull gcr.io/distroless/java:11
-$ docker images | grep gcr.io/distroless/java
-gcr.io/distroless/java            11               358e33e4868e   51 years ago     197MB
+$ docker pull gcr.io/distroless/java-debian10:11
+$ docker images | grep gcr.io/distroless/java-debian10
+gcr.io/distroless/java-debian10   11               985e3d488729   51 years ago     201MB
 
-$ docker run --rm -it gcr.io/distroless/java:11 --version
-openjdk 11.0.6 2020-01-14
-OpenJDK Runtime Environment (build 11.0.6+10-post-Debian-1bpo91)
-OpenJDK 64-Bit Server VM (build 11.0.6+10-post-Debian-1bpo91, mixed mode)
+$ docker run --rm -it gcr.io/distroless/java-debian10:11 --version
+openjdk 11.0.9.1 2020-11-04
+OpenJDK Runtime Environment (build 11.0.9.1+1-post-Debian-1deb10u2)
+OpenJDK 64-Bit Server VM (build 11.0.9.1+1-post-Debian-1deb10u2, mixed mode)
 ```
